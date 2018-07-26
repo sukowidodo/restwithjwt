@@ -3,7 +3,15 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+  var output = {
+    auth:true,
+    id:req.userId,
+    body:{
+      productid:12345,
+      name:"Kalkulator",
+      price:50000}
+  };
+  res.json(output);
 });
 
 module.exports = router;
