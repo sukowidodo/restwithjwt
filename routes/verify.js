@@ -8,12 +8,12 @@ function verifyToken(req, res, next) {
 
     if (authHeader) {
       const token = authHeader.split(' ')[1];
-      if (!token) return res.status(200).send({ auth: false, message: 'No token provided.' });
+
+      if (!token) return res.status(200).send({ code: 401, message: 'No token provided.', data : null});
 
       // verifies secret and checks exp
       jwt.verify(token, config.secret, function(err, decoded) {      
-        if (err) 
-          return res.status(200).send({ auth: false, message: 'Failed to authenticate token.' });    
+        if (err) return res.status(200).send({ code: 401, message: 'Failed to authenticate token.', data : null });    
 
         // if everything is good, save to request for use in other routes
         req.userId = decoded.id;

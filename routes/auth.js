@@ -7,26 +7,30 @@ var router = express.Router();
 
 /* GET home page. */
 router.post('/login', function(req, res, next) {
-    var username = req.body.username;
-    var password = req.body.password;
+    const username = req.body.username
+    const password = req.body.password
 
-    var salt = bcrypt.genSaltSync(10);
+    const salt = bcrypt.genSaltSync(10);
     var hashedPassword = bcrypt.hashSync("suko", salt);
     
     // check if the password is valid
     var passwordIsValid = bcrypt.compareSync(password, hashedPassword); //password sementara
 
-    if (!passwordIsValid) return res.status(200).send({ code: 500, token: null });
+    //response if invalid
+    if (!passwordIsValid && username == "suko") return res.status(200).send({ code: 500, message : "FAILED", data : null });
     
-
-
-    var token = jwt.sign({ id: "123456789" }, config.secret, {
+    var token = jwt.sign({ id: "1234567890" }, config.secret, {
         expiresIn: 5*60 
     });
 
     // return the information including token as JSON
-    res.status(200).send({ code: 200, token: token });
-    
+    res.status(200).send({ 
+      code: 200, 
+      message : "SUCCESS", 
+      data : { 
+        token : token 
+      } 
+    });
 });
 
 router.get('/me', function(req, res, next) {
